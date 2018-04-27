@@ -36,6 +36,11 @@ public final class Battle
   {
     sideTwo = shipsOfSideTwo;
 
+    if (isLocalized)
+    {
+      fightStrategy.localizeFight();
+    }
+
     fightStrategy.fight(sideOne, sideTwo);
 
     return this;

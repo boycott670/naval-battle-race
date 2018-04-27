@@ -8,6 +8,8 @@ import com.sqli.nespresso.navalbattle.ships.Ship;
 
 public final class DefaultFightStrategy implements FightStrategy
 {
+  private boolean localizedFight = false;
+
   private List<Ship> shipsOfSideOne, shipsOfSideTwo;
 
   @Override
@@ -26,22 +28,45 @@ public final class DefaultFightStrategy implements FightStrategy
           .mapToDouble(ship -> ship.damage() * (shipsOfSideTwo.size() > shipsOfSideOne.size() ? 1.15 : 1))
           .sum();
 
-      shipsOfSideTwo.get(0)
-          .takeDamage(totalDamageOfSideOne);
-
-      shipsOfSideOne.get(0)
-          .takeDamage(totalDamageOfSideTwo);
-
-      if (shipsOfSideTwo.get(0)
-          .isDestroyed())
+      if (!localizedFight)
       {
-        shipsOfSideTwo.remove(0);
+        shipsOfSideTwo.get(0)
+            .takeDamage(totalDamageOfSideOne);
+
+        shipsOfSideOne.get(0)
+            .takeDamage(totalDamageOfSideTwo);
+
+        if (shipsOfSideTwo.get(0)
+            .isDestroyed())
+        {
+          shipsOfSideTwo.remove(0);
+        }
+
+        if (shipsOfSideOne.get(0)
+            .isDestroyed())
+        {
+          shipsOfSideOne.remove(0);
+        }
       }
-
-      if (shipsOfSideOne.get(0)
-          .isDestroyed())
+      else
       {
-        shipsOfSideOne.remove(0);
+        shipsOfSideTwo.get(0)
+            .takeLocalizedDamage(totalDamageOfSideOne);
+
+        shipsOfSideOne.get(0)
+            .takeLocalizedDamage(totalDamageOfSideTwo);
+
+        if (shipsOfSideTwo.get(0)
+            .isDestroyedInLocalizedMode())
+        {
+          shipsOfSideTwo.remove(0);
+        }
+
+        if (shipsOfSideOne.get(0)
+            .isDestroyedInLocalizedMode())
+        {
+          shipsOfSideOne.remove(0);
+        }
       }
     }
   }
@@ -50,6 +75,12 @@ public final class DefaultFightStrategy implements FightStrategy
   public boolean isSideOneWinningSide()
   {
     return shipsOfSideTwo.isEmpty();
+  }
+
+  @Override
+  public void localizeFight()
+  {
+    localizedFight = true;
   }
 
 }

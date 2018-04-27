@@ -4,6 +4,8 @@ import com.sqli.nespresso.navalbattle.ships.Ship;
 
 public interface FightStrategy
 {
+  void localizeFight();
+
   void fight(final Ship[] sideOne, final Ship[] sideTwo);
 
   boolean isSideOneWinningSide();
