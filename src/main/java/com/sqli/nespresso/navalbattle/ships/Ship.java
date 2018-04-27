@@ -2,6 +2,12 @@ package com.sqli.nespresso.navalbattle.ships;
 
 public class Ship
 {
+  private static final int DAMAGE_PER_CANON = 200;
+
+  private static final int HP_PER_HULL = 1;
+  private static final int HP_PER_CANON = 100;
+  private static final int HP_PER_MAST = 1000;
+
   private double displacement;
   private double mast;
   private double canon;
@@ -14,12 +20,12 @@ public class Ship
     this.mast = mast;
     this.canon = canon;
 
-    hp = this.displacement + this.mast * 1000 + this.canon * 100;
+    hp = this.displacement * HP_PER_HULL + this.mast * HP_PER_MAST + this.canon * HP_PER_CANON;
   }
 
   public final double damage()
   {
-    return Math.max(0, 200 * canon);
+    return Math.max(0, canon * DAMAGE_PER_CANON);
   }
 
   public final void takeDamage(final double damage)
@@ -31,15 +37,15 @@ public class Ship
   {
     if (mast > 0)
     {
-      mast -= damage / 1000;
+      mast -= damage / HP_PER_MAST;
     }
     else if (canon > 0)
     {
-      canon -= damage / 100;
+      canon -= damage / HP_PER_CANON;
     }
     else
     {
-      displacement -= damage;
+      displacement -= damage / HP_PER_HULL;
     }
   }
 
