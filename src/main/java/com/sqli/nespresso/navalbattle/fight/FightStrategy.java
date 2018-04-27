@@ -4,7 +4,7 @@ import com.sqli.nespresso.navalbattle.ships.Ship;
 
 public interface FightStrategy
 {
-  void localizeFight();
+  void localizeDamages();
 
   void fight(final Ship[] sideOne, final Ship[] sideTwo);
 

@@ -78,7 +78,7 @@ public final class DefaultFightStrategy implements FightStrategy
   }
 
   @Override
-  public void localizeFight()
+  public void localizeDamages()
   {
     localizedFight = true;
   }

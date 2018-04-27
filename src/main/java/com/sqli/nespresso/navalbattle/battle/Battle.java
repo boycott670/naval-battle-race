@@ -14,16 +14,16 @@ public final class Battle
 
   private Ship[] sideOne, sideTwo;
 
-  private final boolean isLocalized;
+  private final boolean areDamagesLocalized;
 
   public Battle()
   {
-    isLocalized = false;
+    areDamagesLocalized = false;
   }
 
-  public Battle(final byte isLocalizedBattle)
+  public Battle(final byte damagesLocalized)
   {
-    isLocalized = true;
+    areDamagesLocalized = true;
   }
 
   public Battle side(final Ship... shipsOfSideOne)
@@ -36,9 +36,9 @@ public final class Battle
   {
     sideTwo = shipsOfSideTwo;
 
-    if (isLocalized)
+    if (areDamagesLocalized)
     {
-      fightStrategy.localizeFight();
+      fightStrategy.localizeDamages();
     }
 
     fightStrategy.fight(sideOne, sideTwo);
