@@ -6,7 +6,7 @@ public class Ship
   private int mast;
   private int canon;
 
-  private int hp;
+  private double hp;
 
   public Ship(int displacement, int mast, int canon)
   {
@@ -22,7 +22,7 @@ public class Ship
     return Math.max(0, 200 * canon);
   }
 
-  public final void takeDamage(final int damage)
+  public final void takeDamage(final double damage)
   {
     hp -= damage;
   }

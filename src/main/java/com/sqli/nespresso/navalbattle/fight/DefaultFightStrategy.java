@@ -18,23 +18,13 @@ public final class DefaultFightStrategy implements FightStrategy
 
     while (!shipsOfSideOne.isEmpty() && !shipsOfSideTwo.isEmpty())
     {
-      int totalDamageOfSideOne = shipsOfSideOne.stream()
-          .mapToInt(Ship::damage)
+      double totalDamageOfSideOne = shipsOfSideOne.stream()
+          .mapToDouble(ship -> ship.damage() * (shipsOfSideOne.size() > shipsOfSideTwo.size() ? 1.15 : 1))
           .sum();
 
-      int totalDamageOfSideTwo = shipsOfSideTwo.stream()
-          .mapToInt(Ship::damage)
+      double totalDamageOfSideTwo = shipsOfSideTwo.stream()
+          .mapToDouble(ship -> ship.damage() * (shipsOfSideTwo.size() > shipsOfSideOne.size() ? 1.15 : 1))
           .sum();
-
-      if (shipsOfSideOne.size() > shipsOfSideTwo.size())
-      {
-        totalDamageOfSideOne *= 1.15 * shipsOfSideTwo.size();
-      }
-
-      if (shipsOfSideOne.size() < shipsOfSideTwo.size())
-      {
-        totalDamageOfSideTwo *= 1.15 * shipsOfSideOne.size();
-      }
 
       shipsOfSideTwo.get(0)
           .takeDamage(totalDamageOfSideOne);

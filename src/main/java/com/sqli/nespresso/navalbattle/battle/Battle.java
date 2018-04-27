@@ -8,9 +8,23 @@ import com.sqli.nespresso.navalbattle.ships.Ship;
 
 public final class Battle
 {
+  public static final byte LOCALIZED_DAMAGES = 1;
+
   private final FightStrategy fightStrategy = new DefaultFightStrategy();
 
   private Ship[] sideOne, sideTwo;
+
+  private final boolean isLocalized;
+
+  public Battle()
+  {
+    isLocalized = false;
+  }
+
+  public Battle(final byte isLocalizedBattle)
+  {
+    isLocalized = true;
+  }
 
   public Battle side(final Ship... shipsOfSideOne)
   {
