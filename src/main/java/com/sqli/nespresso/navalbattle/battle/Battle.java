@@ -1,7 +1,5 @@
 package com.sqli.nespresso.navalbattle.battle;
 
-import java.util.Arrays;
-
 import com.sqli.nespresso.navalbattle.fight.DefaultFightStrategy;
 import com.sqli.nespresso.navalbattle.fight.FightStrategy;
 import com.sqli.nespresso.navalbattle.ships.Ship;
@@ -12,7 +10,7 @@ public final class Battle
 
   private final FightStrategy fightStrategy = new DefaultFightStrategy();
 
-  private Ship[] sideOne, sideTwo;
+  private Team teamOne, teamTwo;
 
   private final boolean areDamagesLocalized;
 
@@ -28,29 +26,27 @@ public final class Battle
 
   public Battle side(final Ship... shipsOfSideOne)
   {
-    sideOne = shipsOfSideOne;
+    teamOne = Team.of(shipsOfSideOne);
+
     return this;
   }
 
   public Battle against(final Ship... shipsOfSideTwo)
   {
-    sideTwo = shipsOfSideTwo;
+    teamTwo = Team.of(shipsOfSideTwo);
 
     if (areDamagesLocalized)
     {
       fightStrategy.localizeDamages();
     }
 
-    fightStrategy.fight(sideOne, sideTwo);
+    fightStrategy.fight(teamOne, teamTwo);
 
     return this;
   }
 
   public boolean isInTheWinningSide(final Ship ship)
   {
-    return fightStrategy.isSideOneWinningSide() ? Arrays.asList(sideOne)
-        .contains(ship)
-        : Arrays.asList(sideTwo)
-            .contains(ship);
+    return fightStrategy.isTeamOneWinning() ? teamOne.containsAsMember(ship) : teamTwo.containsAsMember(ship);
   }
 }

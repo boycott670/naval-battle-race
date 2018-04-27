@@ -1,12 +1,12 @@
 package com.sqli.nespresso.navalbattle.fight;
 
-import com.sqli.nespresso.navalbattle.ships.Ship;
+import com.sqli.nespresso.navalbattle.battle.Team;
 
 public interface FightStrategy
 {
   void localizeDamages();
 
-  void fight(final Ship[] sideOne, final Ship[] sideTwo);
+  void fight(final Team teamOne, final Team teamTwo);
 
-  boolean isSideOneWinningSide();
+  boolean isTeamOneWinning();
 }

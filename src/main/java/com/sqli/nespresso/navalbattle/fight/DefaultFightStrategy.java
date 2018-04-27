@@ -1,80 +1,42 @@
 package com.sqli.nespresso.navalbattle.fight;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import com.sqli.nespresso.navalbattle.ships.Ship;
+import com.sqli.nespresso.navalbattle.battle.Team;
 
 public final class DefaultFightStrategy implements FightStrategy
 {
   private boolean localizedFight = false;
 
-  private List<Ship> shipsOfSideOne, shipsOfSideTwo;
+  private Team teamOne, teamTwo;
 
   @Override
-  public void fight(Ship[] sideOne, Ship[] sideTwo)
+  public void fight(final Team teamOne, final Team teamTwo)
   {
-    shipsOfSideOne = new ArrayList<>(Arrays.asList(sideOne));
-    shipsOfSideTwo = new ArrayList<>(Arrays.asList(sideTwo));
+    this.teamOne = teamOne;
+    this.teamTwo = teamTwo;
 
-    while (!shipsOfSideOne.isEmpty() && !shipsOfSideTwo.isEmpty())
+    while (!this.teamOne.isSunk() && !this.teamTwo.isSunk())
     {
-      double totalDamageOfSideOne = shipsOfSideOne.stream()
-          .mapToDouble(ship -> ship.damage() * (shipsOfSideOne.size() > shipsOfSideTwo.size() ? 1.15 : 1))
-          .sum();
+      double teamOneDamage = this.teamOne.damage(this.teamOne.size() > this.teamTwo.size());
 
-      double totalDamageOfSideTwo = shipsOfSideTwo.stream()
-          .mapToDouble(ship -> ship.damage() * (shipsOfSideTwo.size() > shipsOfSideOne.size() ? 1.15 : 1))
-          .sum();
+      double teamTwoDamage = this.teamTwo.damage(this.teamOne.size() < this.teamTwo.size());
 
       if (!localizedFight)
       {
-        shipsOfSideTwo.get(0)
-            .takeDamage(totalDamageOfSideOne);
-
-        shipsOfSideOne.get(0)
-            .takeDamage(totalDamageOfSideTwo);
-
-        if (shipsOfSideTwo.get(0)
-            .isDestroyed())
-        {
-          shipsOfSideTwo.remove(0);
-        }
-
-        if (shipsOfSideOne.get(0)
-            .isDestroyed())
-        {
-          shipsOfSideOne.remove(0);
-        }
+        this.teamTwo.takeDamage(teamOneDamage);
+        this.teamOne.takeDamage(teamTwoDamage);
       }
       else
       {
-        shipsOfSideTwo.get(0)
-            .takeLocalizedDamage(totalDamageOfSideOne);
-
-        shipsOfSideOne.get(0)
-            .takeLocalizedDamage(totalDamageOfSideTwo);
-
-        if (shipsOfSideTwo.get(0)
-            .isDestroyedInLocalizedMode())
-        {
-          shipsOfSideTwo.remove(0);
-        }
-
-        if (shipsOfSideOne.get(0)
-            .isDestroyedInLocalizedMode())
-        {
-          shipsOfSideOne.remove(0);
-        }
+        this.teamTwo.takeLocalizedDamage(teamOneDamage);
+        this.teamOne.takeLocalizedDamage(teamTwoDamage);
       }
     }
   }
 
   @Override
-  public boolean isSideOneWinningSide()
+  public boolean isTeamOneWinning()
   {
-    return shipsOfSideTwo.isEmpty();
+    return teamTwo.isSunk();
   }
 
   @Override
