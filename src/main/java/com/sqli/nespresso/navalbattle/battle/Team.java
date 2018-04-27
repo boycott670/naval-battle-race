@@ -23,7 +23,7 @@ public final class Team
   private Team(final Ship... ships)
   {
     members = new ArrayList<>(Arrays.asList(ships));
-    immutableMembers = Collections.unmodifiableList(members);
+    immutableMembers = Collections.unmodifiableList(new ArrayList<>(members));
   }
 
   public boolean isSunk()

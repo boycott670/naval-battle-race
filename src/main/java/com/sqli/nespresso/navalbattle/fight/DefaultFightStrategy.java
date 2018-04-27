@@ -16,9 +16,9 @@ public final class DefaultFightStrategy implements FightStrategy
 
     while (!this.teamOne.isSunk() && !this.teamTwo.isSunk())
     {
-      double teamOneDamage = this.teamOne.damage(this.teamOne.size() > this.teamTwo.size());
+      final double teamOneDamage = this.teamOne.damage(this.teamOne.size() > this.teamTwo.size());
 
-      double teamTwoDamage = this.teamTwo.damage(this.teamOne.size() < this.teamTwo.size());
+      final double teamTwoDamage = this.teamTwo.damage(this.teamOne.size() < this.teamTwo.size());
 
       if (!localizedFight)
       {
