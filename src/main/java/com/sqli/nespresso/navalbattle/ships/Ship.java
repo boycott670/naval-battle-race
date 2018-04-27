@@ -7,6 +7,8 @@ public class Ship
   private static final int HP_PER_HULL = 1;
   private static final int HP_PER_CANON = 100;
   private static final int HP_PER_MAST = 1000;
+  
+  private static final double SPEED_PENALTY_PER_CANON = .5 / 100;
 
   private double displacement;
   private double mast;
@@ -21,6 +23,11 @@ public class Ship
     this.canon = canon;
 
     hp = this.displacement * HP_PER_HULL + this.mast * HP_PER_MAST + this.canon * HP_PER_CANON;
+  }
+
+  public Ship(int displacement, int mast)
+  {
+    this(displacement, mast, 0);
   }
 
   public final double damage()
@@ -57,5 +64,10 @@ public class Ship
   public final boolean isDestroyedInLocalizedMode()
   {
     return displacement <= 0;
+  }
+
+  public double speed()
+  {
+    return displacement / mast * (1 + SPEED_PENALTY_PER_CANON * canon);
   }
 }
