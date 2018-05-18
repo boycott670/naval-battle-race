@@ -23,6 +23,11 @@ public final class Ship
     hp = this.displacement * HP_PER_DISPACEMENT + this.mast * HP_PER_MAST + this.canon * HP_PER_CANON;
   }
   
+  public Ship(int displacement, int mast)
+  {
+    this(displacement, mast, 0);
+  }
+  
   int damage()
   {
     return canon <= 0 ? 0 : DAMAGE_PER_CANON * canon;
@@ -57,5 +62,10 @@ public final class Ship
   public boolean isAliveInLocalizedMode()
   {
     return displacement > 0;
+  }
+  
+  public int speed()
+  {
+    return displacement / mast;
   }
 }
