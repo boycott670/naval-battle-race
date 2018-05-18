@@ -8,9 +8,9 @@ public final class Ship
   private static final int HP_PER_MAST = 1000;
   private static final int HP_PER_CANON = 100;
   
-  private final int displacement;
-  private final int mast;
-  private final int canon;
+  private int displacement;
+  private int mast;
+  private int canon;
   
   private double hp;
   
@@ -25,7 +25,7 @@ public final class Ship
   
   int damage()
   {
-    return DAMAGE_PER_CANON * canon;
+    return canon <= 0 ? 0 : DAMAGE_PER_CANON * canon;
   }
   
   public void takeDamage(final double damage)
@@ -33,8 +33,29 @@ public final class Ship
     hp -= damage;
   }
   
+  public void takeDamageInLocalizedMode(final double damage)
+  {
+    if (mast > 0)
+    {
+      mast -= damage / HP_PER_MAST;
+    }
+    else if (canon > 0)
+    {
+      canon -= damage / HP_PER_CANON;
+    }
+    else
+    {
+      displacement -= damage / HP_PER_DISPACEMENT;
+    }
+  }
+  
   public boolean isAlive()
   {
     return hp > 0;
+  }
+  
+  public boolean isAliveInLocalizedMode()
+  {
+    return displacement > 0;
   }
 }

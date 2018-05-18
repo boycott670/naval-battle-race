@@ -1,7 +1,10 @@
 package com.sqli.nespresso.navalbattle.strategies;
 
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
+import java.util.function.Function;
 
+import com.sqli.nespresso.navalbattle.ships.Ship;
 import com.sqli.nespresso.navalbattle.ships.Side;
 
 public final class DefaultBattleStrategy implements BattleStrategy
@@ -12,6 +15,8 @@ public final class DefaultBattleStrategy implements BattleStrategy
   private Side firstSide;
   
   private Side secondSide;
+  
+  private boolean isLocalizedBattle = false;
   
   public DefaultBattleStrategy()
   {
@@ -31,6 +36,29 @@ public final class DefaultBattleStrategy implements BattleStrategy
   }
 
   @Override
+  public void localizeBattle()
+  {
+    isLocalizedBattle = true;
+  }
+  
+  private void genericBlow(final double firstSideDamage, final double secondSideDamage, final BiConsumer<Ship, Double> takeDamage, final Function<Ship, Boolean> isAlive)
+  {
+    takeDamage.accept(secondSide.getTarget(), firstSideDamage);
+    
+    takeDamage.accept(firstSide.getTarget(), secondSideDamage);
+    
+    if (!isAlive.apply(secondSide.getTarget()))
+    {
+      secondSide.destroyTarget();
+    }
+    
+    if (!isAlive.apply(firstSide.getTarget()))
+    {
+      firstSide.destroyTarget();
+    }
+  }
+
+  @Override
   public Side winningSide()
   {
     while (firstSide.isAlive() && secondSide.isAlive())
@@ -39,18 +67,13 @@ public final class DefaultBattleStrategy implements BattleStrategy
       
       double secondSideDamage = damageEvaluator.apply(secondSide, firstSide);
       
-      secondSide.getTarget().takeDamage(firstSideDamage);
-      
-      firstSide.getTarget().takeDamage(secondSideDamage);
-      
-      if (!secondSide.getTarget().isAlive())
+      if (isLocalizedBattle)
       {
-        secondSide.destroyTarget();
+        genericBlow(firstSideDamage, secondSideDamage, Ship::takeDamageInLocalizedMode, Ship::isAliveInLocalizedMode);
       }
-
-      if (!firstSide.getTarget().isAlive())
+      else
       {
-        firstSide.destroyTarget();
+        genericBlow(firstSideDamage, secondSideDamage, Ship::takeDamage, Ship::isAlive);
       }
     }
     

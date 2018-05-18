@@ -8,5 +8,7 @@ public interface BattleStrategy
   
   void setSecondSide(Side side);
   
+  void localizeBattle();
+  
   Side winningSide();
 }
