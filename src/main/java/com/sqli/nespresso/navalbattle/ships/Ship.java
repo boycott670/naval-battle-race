@@ -1,6 +1,6 @@
 package com.sqli.nespresso.navalbattle.ships;
 
-public final class Ship
+public class Ship
 {
   private static final int DAMAGE_PER_CANON = 200;
   
@@ -64,7 +64,7 @@ public final class Ship
     return displacement > 0;
   }
   
-  public int speed()
+  public double speed()
   {
     return displacement / mast;
   }

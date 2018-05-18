@@ -16,6 +16,6 @@ public final class Race
   
   public Ship winner()
   {
-    return Arrays.stream(ships).sorted(Comparator.comparingInt(Ship::speed)).findFirst().get();
+    return Arrays.stream(ships).sorted(Comparator.comparingDouble(Ship::speed)).findFirst().get();
   }
 }
