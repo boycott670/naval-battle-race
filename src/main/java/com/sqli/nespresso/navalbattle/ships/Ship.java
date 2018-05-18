@@ -2,6 +2,8 @@ package com.sqli.nespresso.navalbattle.ships;
 
 public class Ship
 {
+  private static final double PENALTY_SPEED_PER_CANON = .005;
+  
   private static final int DAMAGE_PER_CANON = 200;
   
   private static final int HP_PER_DISPACEMENT = 1;
@@ -66,6 +68,8 @@ public class Ship
   
   public double speed()
   {
-    return displacement / mast;
+    final int speed = displacement / mast;
+    
+    return speed + speed * PENALTY_SPEED_PER_CANON * canon;
   }
 }
