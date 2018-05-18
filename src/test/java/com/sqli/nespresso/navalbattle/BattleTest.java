@@ -19,4 +19,17 @@ public class BattleTest
         .against(b);
     assertThat(battle.isInTheWinningSide(b)).isTrue();
   }
+
+  @Test
+  public void fightWithDifferentFirePower()
+  {
+    Ship a = new Ship(2000, 1, 15); // 3k damage, 4500 hp (2000 + 1000 + 1500), can take 3 hits [should win]
+    // 3k damage, 2000 hp (just displacement), can take 1 hits
+    Ship b = new Ship(3100, 1, 10); // 2k damage, 5100 hp (3100 + 1000 + 1000), can take 2 hits
+    // 2k damage, 3000 hp (just displacement), can take 2 hits [wins]
+
+    Battle battle = new Battle().side(a)
+        .against(b);
+    assertThat(battle.isInTheWinningSide(a)).isTrue();
+  }
 }
