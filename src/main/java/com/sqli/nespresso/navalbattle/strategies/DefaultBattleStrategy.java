@@ -1,13 +1,22 @@
 package com.sqli.nespresso.navalbattle.strategies;
 
+import java.util.function.BiFunction;
+
 import com.sqli.nespresso.navalbattle.ships.Side;
 
 public final class DefaultBattleStrategy implements BattleStrategy
 {
   
+  private final BiFunction<Side, Side, Double> damageEvaluator;
+  
   private Side firstSide;
   
   private Side secondSide;
+  
+  public DefaultBattleStrategy()
+  {
+    damageEvaluator = (attacker, defender) -> attacker.damage() * (attacker.size() > defender.size() ? 1.15 * defender.size() : 1);
+  }
 
   @Override
   public void setFirstSide(Side side)
@@ -26,18 +35,9 @@ public final class DefaultBattleStrategy implements BattleStrategy
   {
     while (firstSide.isAlive() && secondSide.isAlive())
     {
-      double firstSideDamage = firstSide.damage();
+      double firstSideDamage = damageEvaluator.apply(firstSide, secondSide);
       
-      double secondSideDamage = secondSide.damage();
-      
-      if (firstSide.size() > secondSide.size())
-      {
-        firstSideDamage += firstSideDamage * 1.15 * (firstSide.size() - secondSide.size());
-      }
-      else if (secondSide.size() > firstSide.size())
-      {
-        secondSideDamage += secondSideDamage * 1.15 * (secondSide.size() - firstSide.size());
-      }
+      double secondSideDamage = damageEvaluator.apply(secondSide, firstSide);
       
       secondSide.getTarget().takeDamage(firstSideDamage);
       

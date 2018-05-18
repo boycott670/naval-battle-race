@@ -3,7 +3,7 @@ package com.sqli.nespresso.navalbattle.ships;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Queue;
 
 public final class Side
@@ -14,9 +14,11 @@ public final class Side
   
   public Side(final Ship[] members)
   {
-    this.members = new ArrayDeque<>(Arrays.asList(members));
+    final List<Ship> membersAsList = Arrays.asList(members);
     
-    initialMembers = Collections.unmodifiableCollection(this.members);
+    this.members = new ArrayDeque<>(membersAsList);
+    
+    initialMembers = membersAsList;
   }
   
   public int damage()
