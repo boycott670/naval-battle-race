@@ -12,7 +12,7 @@ public final class Ship
   private final int mast;
   private final int canon;
   
-  private int hp;
+  private double hp;
   
   public Ship(int displacement, int mast, int canon)
   {
@@ -28,7 +28,7 @@ public final class Ship
     return DAMAGE_PER_CANON * canon;
   }
   
-  public void takeDamage(final int damage)
+  public void takeDamage(final double damage)
   {
     hp -= damage;
   }

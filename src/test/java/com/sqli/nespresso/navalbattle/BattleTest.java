@@ -32,4 +32,19 @@ public class BattleTest
         .against(b);
     assertThat(battle.isInTheWinningSide(a)).isTrue();
   }
+
+  @Test
+  public void packfight()
+  {
+    Ship a = new Ship(65000, 3, 64);
+    Ship b = new Ship(23000, 1, 24);
+    Ship c = new Ship(23000, 1, 24);
+    Ship d = new Ship(23000, 1, 24);
+
+    Battle battle = new Battle().side(a)
+        .against(b, c, d);
+    assertThat(battle.isInTheWinningSide(b)).isTrue();
+    assertThat(battle.isInTheWinningSide(c)).isTrue();
+    assertThat(battle.isInTheWinningSide(d)).isTrue();
+  }
 }

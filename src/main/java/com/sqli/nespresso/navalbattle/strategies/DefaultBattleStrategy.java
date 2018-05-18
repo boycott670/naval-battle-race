@@ -26,9 +26,18 @@ public final class DefaultBattleStrategy implements BattleStrategy
   {
     while (firstSide.isAlive() && secondSide.isAlive())
     {
-      final int firstSideDamage = firstSide.damage();
+      double firstSideDamage = firstSide.damage();
       
-      final int secondSideDamage = secondSide.damage();
+      double secondSideDamage = secondSide.damage();
+      
+      if (firstSide.size() > secondSide.size())
+      {
+        firstSideDamage += firstSideDamage * 1.15 * (firstSide.size() - secondSide.size());
+      }
+      else if (secondSide.size() > firstSide.size())
+      {
+        secondSideDamage += secondSideDamage * 1.15 * (secondSide.size() - firstSide.size());
+      }
       
       secondSide.getTarget().takeDamage(firstSideDamage);
       

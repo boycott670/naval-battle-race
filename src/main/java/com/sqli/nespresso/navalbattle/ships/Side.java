@@ -24,6 +24,11 @@ public final class Side
     return members.stream().mapToInt(Ship::damage).sum();
   }
   
+  public int size()
+  {
+    return members.size();
+  }
+  
   public Ship getTarget()
   {
     return members.peek();
